@@ -1,0 +1,55 @@
+body {
+    background: url('../images/1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    -webkit-transition: background 300ms ease-in 200ms;
+    -moz-transition: background 300ms ease-in 200ms;
+    -o-transition: background 300ms ease-in 200ms;
+    transition: background 300ms ease-in 200ms;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+@keyframes circletimer {
+    0% {
+      stroke-dashoffset: 500;
+      stroke-dasharray: 500;
+    }
+    100% {
+      stroke-dashoffset: 0;
+      stroke-dasharray: 500;
+    }
+  }
+
+svg {
+background-color: transparent;
+position: absolute;
+background-color: transparent;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%) rotateZ(-90deg);
+}
+
+svg .circle {
+stroke: #bc0054;
+stroke-width: 16;
+fill: transparent;
+stroke-dashoffset: 500;
+stroke-dasharray: 0;
+animation: 30s circletimer linear;
+}
+
+.countdown {
+position: absolute;
+display: block;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+color: #bc0054;
+font-size: 42px;
+font-weight: 700;
+}
+  

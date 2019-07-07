@@ -1,7 +1,46 @@
 $(document).ready(function () {
     var correctCount = 0;
     var incorrectCount = 0;
-    var countdown = 30;
+    var countdownNumberEl;
+    var currentButton;
+    var answers;
+
+    function clearCountdown(interval) {
+        clearTimeout(interval);
+    }
+
+    function countdown() {
+        var timer = 30;
+        var count = setInterval(function () {
+
+            if (timer <= 0) {
+                countdownNumberEl.html('Time\'s Out!');
+                clearCountdown(count);
+                incorrectCount++;
+                nextQuestion();
+            } else {
+                --timer;
+                countdownNumberEl.html('<span class="timerDisplay">' + 'Time remaining: ' + timer + '</span>');
+            }
+        }, 1000);
+    }
+
+    function bgSwitch() {
+        var timer = 50;
+        var randomNumber = Math.floor(Math.random() * 7);
+        var count = setInterval(function () {
+            if (timer <= 0) {
+                clearCountdown(count);
+                $('body').css('background-image', 'url: (\'../images/' + randomNumber + '.jpg');
+            } else {
+                --timer;
+                console.log(timer);
+
+            };
+        }, 1000);
+    }
+
+    bgSwitch();
 
     var questionArray = [
         'What house at Hogwarts does Harry belong to?',
@@ -58,9 +97,7 @@ $(document).ready(function () {
         'A person that cathes Dark Wizards',
         'Severus Snape'];
 
-
-
-    $('#start').on('click', function nextQuestion() {
+    function nextQuestion() {
         $('#game-body').html('<div id="QA-panel" class="row"></div>');
         var randomNumber = Math.floor(Math.random() * 10);
         var randomQuestion = questionArray[randomNumber];
@@ -69,50 +106,39 @@ $(document).ready(function () {
         $('#QA-panel').prepend('<div id="countdown" class="col-md-12"></div>');
         $('#countdown').html('<div id="countdown-number"></div>');
 
-        var countdownNumberEl = $('#countdown-number');
+        countdownNumberEl = $('#countdown-number');
 
-        countdownNumberEl.append('<svg width="200" height="200">' + '< circle class= "circle" cx = "100" cy = "100" r = "80" />' + '</svg >');
         $('#QA-panel').append('<div id="choices" class="col-md-12 btn-group-vertical"></div>');
-
-        function clearCountdown(interval) {
-            clearTimeout(interval);
-        }
-    
-        function countdown() {
-            var count = setInterval(function () {
-                console.log(countdown);
-    
-                if (countdown <= 0) {
-                    ountdownNumberEl.html('Time\'s Out!');
-                    clearCountdown(count);
-                } else {
-                    --countdown;
-                    ountdownNumberEl.html(countdown);
-                }
-            }, 1000);
-        }
 
         countdown();
 
         for (let i = 0; i < 4; i++) {
-            var answers = answerArray[randomNumber][i];
-
+            answers = answerArray[randomNumber][i];
             $('#choices').append('<button type="button" class="btn btn-outline-dark choices">' + answers + '</button>');
+            $('.choices').on('click', function(){
+                checkArray();
+            })
+        };
+    };
 
-        }
-    });
-
-    $('.choices').on('click', function () {
+    function checkArray() {
         var selectedAnswer = $(this).text();
         console.log(selectedAnswer);
         var checkResult = $.inArray(selectedAnswer, answerKey);
+        console.log(checkResult);
         if (checkResult !== -1) {
             correctCount++;
-
-            nextQuestion();
+            console.log(correctCount);
         } else {
             incorrectCount++;
-            nextQuestion();
+            console.log(incorrectCount)
         }
-    })
+        nextQuestion();
+    };
+
+    $('#start').on('click', function () {
+        nextQuestion();
+    });
+
+
 })

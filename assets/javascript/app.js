@@ -5,8 +5,8 @@ $(document).ready(function () {
     var currentButton;
     var answers;
 
-    function clearCountdown(interval) {
-        clearTimeout(interval);
+    function clearCountdown() {
+        clearTimeout();
     }
 
     function countdown() {
@@ -21,12 +21,12 @@ $(document).ready(function () {
             } else {
                 --timer;
                 countdownNumberEl.html('<span class="timerDisplay">' + 'Time remaining: ' + timer + '</span>');
-            }
+            };
         }, 1000);
-    }
+    };
 
     function bgSwitch() {
-        var timer = 50;
+        var timer = 10;
         var randomNumber = Math.floor(Math.random() * 7);
         var count = setInterval(function () {
             if (timer <= 0) {
@@ -38,9 +38,7 @@ $(document).ready(function () {
 
             };
         }, 1000);
-    }
-
-    bgSwitch();
+    };
 
     var questionArray = [
         'What house at Hogwarts does Harry belong to?',
@@ -117,28 +115,30 @@ $(document).ready(function () {
             $('#choices').append('<button type="button" class="btn btn-outline-dark choices">' + answers + '</button>');
             $('.choices').on('click', function(){
                 checkArray();
-            })
+            });
         };
     };
 
     function checkArray() {
-        var selectedAnswer = $(this).text();
+        var selectedAnswer = $('').text();
         console.log(selectedAnswer);
         var checkResult = $.inArray(selectedAnswer, answerKey);
         console.log(checkResult);
         if (checkResult !== -1) {
-            correctCount++;
+            correctCount ++;
             console.log(correctCount);
         } else {
-            incorrectCount++;
-            console.log(incorrectCount)
-        }
+            incorrectCount ++;
+            console.log(incorrectCount);
+        };
         nextQuestion();
     };
 
     $('#start').on('click', function () {
+        bgSwitch();
+
         nextQuestion();
     });
 
 
-})
+});

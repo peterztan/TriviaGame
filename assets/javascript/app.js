@@ -1,44 +1,16 @@
 $(document).ready(function () {
+    var timer;
     var correctCount = 0;
     var incorrectCount = 0;
     var countdownNumberEl;
-    var currentButton;
+    var randomNumber;
     var answers;
+    var count;
 
-    function clearCountdown() {
-        clearTimeout();
-    }
+    $('#start').on('click', function () {
 
-    function countdown() {
-        var timer = 30;
-        var count = setInterval(function () {
-
-            if (timer <= 0) {
-                countdownNumberEl.html('Time\'s Out!');
-                clearCountdown(count);
-                incorrectCount++;
-                nextQuestion();
-            } else {
-                --timer;
-                countdownNumberEl.html('<span class="timerDisplay">' + 'Time remaining: ' + timer + '</span>');
-            };
-        }, 1000);
-    };
-
-    function bgSwitch() {
-        var timer = 10;
-        var randomNumber = Math.floor(Math.random() * 7);
-        var count = setInterval(function () {
-            if (timer <= 0) {
-                clearCountdown(count);
-                $('body').css('background-image', 'url: (\'../images/' + randomNumber + '.jpg');
-            } else {
-                --timer;
-                console.log(timer);
-
-            };
-        }, 1000);
-    };
+        nextQuestion();
+    });
 
     var questionArray = [
         'What house at Hogwarts does Harry belong to?',
@@ -96,49 +68,79 @@ $(document).ready(function () {
         'Severus Snape'];
 
     function nextQuestion() {
+        timer = 30;
+        countdown();
+
         $('#game-body').html('<div id="QA-panel" class="row"></div>');
-        var randomNumber = Math.floor(Math.random() * 10);
+        randomNumber = Math.floor(Math.random() * questionArray.length);
         var randomQuestion = questionArray[randomNumber];
 
         $('#QA-panel').html('<h2 class="col-md-12">' + randomQuestion + '</h2>');
         $('#QA-panel').prepend('<div id="countdown" class="col-md-12"></div>');
         $('#countdown').html('<div id="countdown-number"></div>');
-
         countdownNumberEl = $('#countdown-number');
 
         $('#QA-panel').append('<div id="choices" class="col-md-12 btn-group-vertical"></div>');
 
-        countdown();
-
         for (let i = 0; i < 4; i++) {
             answers = answerArray[randomNumber][i];
             $('#choices').append('<button type="button" class="btn btn-outline-dark choices">' + answers + '</button>');
-            $('.choices').on('click', function(){
-                checkArray();
-            });
         };
     };
+    
+    function countdown() {
+        count = setInterval(function () {
 
-    function checkArray() {
-        var selectedAnswer = $('').text();
+            if (timer <= 0) {
+                countdownNumberEl.html('<h2>Time\'s Out!</h2>');
+                clearInterval(count);
+                incorrectCount++;
+                var text = countdownNumberEl.text();
+                setTimeout(function () {
+                    if (text == 'Time\'s Out!') {
+                        nextQuestion();
+                    };
+                }, 1000);
+            } else {
+                --timer;
+                countdownNumberEl.html('<span class="timerDisplay">' + 'Time remaining: ' + timer + '</span>');
+            };
+        }, 1000);
+    };
+
+    $('#game-body').on('click', '.choices', function checkArray() {
+        clearInterval(count);
+
+        var selectedAnswer = $(this).text();
         console.log(selectedAnswer);
         var checkResult = $.inArray(selectedAnswer, answerKey);
         console.log(checkResult);
+
+
         if (checkResult !== -1) {
-            correctCount ++;
+            correctCount++;
             console.log(correctCount);
         } else {
-            incorrectCount ++;
+            incorrectCount++;
             console.log(incorrectCount);
         };
-        nextQuestion();
-    };
 
-    $('#start').on('click', function () {
-        bgSwitch();
+        var totalAnswers = correctCount + incorrectCount;
 
-        nextQuestion();
+        if (totalAnswers !== 10) {
+            nextQuestion();
+        } else {
+            EndGameDisplay();
+        };
     });
 
+    function EndGameDisplay() {
+        $('#game-body').html('');
+        $('#game-body').append('<h1>Game Over!</h1>');
+        $('#game-body').append('<div id=\'right\' class=\'col-md-12\'>Questions Answered Correctly: </div>');
+        $('#right').append(correctCount);
+        $('#game-body').append('<div id=\'wrong\' class=\'col-md-12\'>Questions Answered Incorrectly: </div>');
+        $('#wrong').append(incorrectCount);
+    }
 
 });

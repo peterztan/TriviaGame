@@ -1,4 +1,6 @@
 body {
+    display: flex;
+    justify-content: center;
     background-image: url('../images/1.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -20,4 +22,25 @@ html, body {
 h1, h2 {
     text-align: center;
 }
-  
+
+.card {
+    backdrop-filter: blur(18px) !important;
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    flex-direction: column !important;
+}
+
+.card-header, .card-body {
+    background-color: transparent !important;
+}
+
+.card-body {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-success {
+    flex-direction: row;
+    height: 10%;
+    margin-top: 100%;
+    border-radius: 36px;
+}
